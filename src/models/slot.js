@@ -7,6 +7,7 @@ AWS.config.update(local);
 const book = async options => {
   const { day, plateNumber, fullName, slot } = options;
   const record = await findById(day);
+
   if (Object.keys(record).length > 0) {
     return await update({
       slots: record.Item.slots,
@@ -17,7 +18,7 @@ const book = async options => {
     });
   } else {
     const slots = [{ plateNumber, fullName, slot }];
-    return await create({ slots });
+    return await create({ slots, day });
   }
 };
 
@@ -27,7 +28,7 @@ const findById = async day => {
     Key: { day }
   };
   const result = await dynamoClient.get(params).promise();
-  return result.Item;
+  return result;
 };
 
 const all = async () => {
@@ -37,7 +38,7 @@ const all = async () => {
 };
 
 const create = async options => {
-  const { slots } = options;
+  const { slots, day } = options;
   const params = {
     TableName,
     Item: {

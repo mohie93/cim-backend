@@ -15,13 +15,13 @@ router.post("/", async (req, res) => {
     const { day, slot, plateNumber, fullName } = req.body;
     if (!day) res.status(422).json({ msg: "day_param_is_required" });
     if (!slot) res.status(422).json({ msg: "slot_param_is_required" });
-    if (!plateNumber)
-      res.status(422).json({ msg: "plateNumber_param_is_required" });
+    if (!plateNumber) res.status(422).json({ msg: "plateNumber_param_is_required" });
     if (!fullName) res.status(422).json({ msg: "fullName_param_is_required" });
-    await Slot.book({ day, slot, plateNumber, fullName });
+    const record = await Slot.book({ day, slot, plateNumber, fullName });
+    res.status(201).json({record});
   } catch (error) {
     res.status(422).json({ msg: error });
-    return error;
+    console.log({error});
   }
 });
 

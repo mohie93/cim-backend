@@ -27,7 +27,7 @@ const findById = async day => {
     Key: { day }
   };
   const result = await dynamoClient.get(params).promise();
-  return result;
+  return result.Item;
 };
 
 const all = async () => {

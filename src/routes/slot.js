@@ -15,12 +15,24 @@ router.post("/", async (req, res) => {
     const { day, slot, plateNumber, fullName } = req.body;
     if (!day) res.status(422).json({ msg: "day_param_is_required" });
     if (!slot) res.status(422).json({ msg: "slot_param_is_required" });
-    if (!plateNumber) res.status(422).json({ msg: "plateNumber_param_is_required" });
+    if (!plateNumber)
+      res.status(422).json({ msg: "plateNumber_param_is_required" });
     if (!fullName) res.status(422).json({ msg: "fullName_param_is_required" });
     await Slot.book({ day, slot, plateNumber, fullName });
   } catch (error) {
     res.status(422).json({ msg: error });
     return error;
+  }
+});
+
+router.get("/:day", async (req, res) => {
+  try {
+    const { day } = req.params;
+    const formatedDay = day.replace(/_/g, '/');
+    const records = await Slot.findById(formatedDay);
+    res.status(200).json({ records });
+  } catch (error) {
+    res.status(200).json({ error });
   }
 });
 

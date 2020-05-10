@@ -28,8 +28,8 @@ router.post("/", async (req, res) => {
 router.get("/:day", async (req, res) => {
   try {
     const { day } = req.params;
-    const formatedDay = day.replace(/_/g, '/');
-    const records = await Slot.findById(formatedDay);
+    const formattedDay = day.replace(/_/g, '/');
+    const records = await Slot.findById(formattedDay);
     res.status(200).json({ records });
   } catch (error) {
     res.status(200).json({ error });
